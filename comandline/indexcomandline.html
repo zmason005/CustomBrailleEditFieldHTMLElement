@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Braille Single-Line Column Editor</title>
+  <link rel="stylesheet" href="stylecomandline.css">
+</head>
+<body>
+
+  <div class="editor-wrapper">
+    <h1>Custom Braille Workspace Element</h1>
+    
+    <!-- Using your custom HTML component directly in the markup -->
+    <braille-editor id="myBrailleEditor"></braille-editor>
+
+    <div class="instructions">
+      <p><strong>Sighted view:</strong> Three separate, clean columns displaying line numbers, text input, and custom metrics.</p>
+      <p><strong>Braille Display tree:</strong> Intercepted data stream presents the left gutter, active line, and right gutter as a continuous, flat line text element without row panning.</p>
+    </div>
+  </div>
+
+  <!-- Load the Web Component logic -->
+  <script src="brleditorcomandline.js"></script>
+  
+  <script>
+    // Access your custom element after it has loaded
+    const editorInstance = document.getElementById('myBrailleEditor');
+
+    // Example user-defined function: Display a custom indicator in the right gutter
+    // Let's modify it to flag lines that are empty vs lines that have text.
+    editorInstance.setRightGutterFunction((lineText) => {
+      if (lineText.length === 0) return "EMPTY";
+      
+      // Default metric: Word count + Character count tracker
+      const words = lineText.trim().split(/\s+/).filter(Boolean).length;
+      return `${words}w / ${lineText.length}c`;
+    });
+  </script>
+
+</body>
+</html>
