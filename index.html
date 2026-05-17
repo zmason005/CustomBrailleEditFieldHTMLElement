@@ -3,22 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Braille-First Architecture Terminal</title>
+  <title>Braille Workspace Element</title>
   <link rel="stylesheet" href="theme-black-gold.css">
 </head>
 <body>
 
-  <div class="app-container">
-    <h1>Tactile Software Architecture</h1>
-    <p class="subtitle">Braille-First Editor Component • Shadow DOM Prototype</p>
+  <div class="editor-wrapper">
+    <h1>Custom Braille Workspace Element</h1>
+    
+    <braille-editor id="myBrailleEditor"></braille-editor>
 
-    <braille-editor center-width="40"></braille-editor>
-
-    <p class="debug-tip">
-      💡 <strong>Vibecoder Testing Trace:</strong> Open your browser's Developer Tools (<code>F12</code> or <code>Cmd + Option + I</code>) and view the JavaScript Console to see the live 3-part stitched layout strings executing on every input update.
-    </p>
+    <div class="instructions">
+      <p><strong>Sighted view:</strong> Three separate, clean columns displaying line numbers, text input, and custom metrics.</p>
+      <p><strong>Braille Display tree:</strong> Intercepted data stream presents the left gutter, active line, and right gutter as a continuous, flat line text element without row panning.</p>
+    </div>
   </div>
 
   <script src="braille-editor.js"></script>
+  
+  <script>
+    const editorInstance = document.getElementById('myBrailleEditor');
+
+    // Custom configuration rule running on the right margin tracking column
+    editorInstance.setRightGutterFunction((lineText) => {
+      if (lineText.length === 0) return "EMPTY";
+      
+      const words = lineText.trim().split(/\s+/).filter(Boolean).length;
+      return `${words}w / ${lineText.length}c`;
+    });
+  </script>
+
 </body>
 </html>
